@@ -3,6 +3,12 @@
   overflow-y: hidden;
 }
 
-.textField__label{
-    color : white  !important;
+.textField__label {
+  color: white !important;
 }
+
+.selected__channel {
+  background-color: #393d42 !important;
+  color: white !important;
+}
+

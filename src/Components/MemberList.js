@@ -1,9 +1,31 @@
 import { Avatar } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
-import React from "react";
+import userEvent from "@testing-library/user-event";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { selectServerId } from "../features/appSlice";
+import { auth, db } from "../firebase";
 
 function MemberList() {
+  const serverId = useSelector(selectServerId);
+  const [members, setMembers] = useState([]);
+  const [user] = useAuthState(auth);
+  const getMembers = () => {
+    if (serverId !== "home" && serverId) {
+      db.collection("Servers")
+        .doc(serverId)
+        .onSnapshot((queryData) => {
+          setMembers(queryData.data().members);
+        });
+    }
+  };
+
+  useEffect(() => {
+    getMembers();
+  }, []);
+
   return (
     <MemeberListContainer>
       <Header>
@@ -13,10 +35,23 @@ function MemberList() {
         </div>
       </Header>
       <Members>
-        <Member>
-          <Avatar src="https://icon-library.com/images/yellow-discord-icon/yellow-discord-icon-24.jpg" />
-          <h4>Yash Mehta</h4>
-        </Member>
+        {members.length > 0 &&
+          members.map((value) => {
+            return (
+              value.uid !== user.uid && (
+                <Member>
+                  <Avatar src={value.photoUrl} />
+                  <h4>{value.name}</h4>
+                </Member>
+              )
+            );
+          })}
+
+        {members.length === 1 && (
+          <div style = {{display : 'grid', placeItems: 'center', height: '100%', color : 'white'}}>
+            <h2>No members</h2>
+          </div>
+        )}
       </Members>
     </MemeberListContainer>
   );
