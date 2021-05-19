@@ -24,7 +24,7 @@ function MemberList() {
 
   useEffect(() => {
     getMembers();
-  }, []);
+  }, [serverId]);
 
   return (
     <MemeberListContainer>

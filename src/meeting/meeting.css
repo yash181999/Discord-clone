@@ -1,10 +1,12 @@
 .meeting.wrapper {
-  background: rgb(12, 43, 64);
-  height: 100%;
+  background:#1f2425;
+  height: 100vh;
+  width: 100%;
+  padding : 30px;
 }
 
 video {
-  max-width: unset;
+  max-width: 100vh;
 }
 
 .meeting .ag-header {
@@ -41,8 +43,8 @@ video {
 
 .ag-container {
   width: calc(100% - 60px);
-  height: 100%;
-  margin: 0 auto;
-  background: rgba(255, 255, 255, .1);
+  height: 80vh;
+  width : 98%;
+  background-color: rgba(255, 255, 255, .1);
   border-radius: 12px;
 }

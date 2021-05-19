@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Sidebar from "./Components/Sidebar";
 import Server from "./Components/Server";
@@ -8,24 +8,21 @@ import MemberList from "./Components/MemberList";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./Views/Login";
 import { auth, db } from "./firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState } from "react-firebase-hooks";
 import { useSelector } from "react-redux";
-import { selectedChannelId, selectedVoiceChannelId, selectServerId } from "./features/appSlice";
-import Index from "./Components/AgoraVideoCall/Index";
-import AgoraCanvas from "./Components/AgoraVideoCall/AgoraCanvas";
+import {
+  selectedChannelId,
+  selectedVoiceChannelId,
+  selectServerId,
+} from "./features/appSlice";
 import { AGORA_APP_ID } from "./agora.config";
+import Meeting from "./meeting/index";
 
 function App() {
-  const videoProfile = Cookies.get("videoProfile").split(",")[0] || "480p_4";
-  const channel = Cookies.get("channel") || "test";
-  const transcode = Cookies.get("transcode") || "interop";
-  const attendeeMode = Cookies.get("attendeeMode") || "video";
-  const baseMode = Cookies.get("baseMode") || "avc";
   const appId = AGORA_APP_ID;
   const uid = undefined;
   const serverId = useSelector(selectServerId);
   const [user, loading] = useAuthState(auth);
-  const channelId = useSelector(selectedChannelId);
   const voiceChannelId = useSelector(selectedVoiceChannelId);
 
   useEffect(() => {
@@ -34,10 +31,10 @@ function App() {
         name: user?.displayName,
         userImage: user?.photoURL,
         email: user?.email,
-        userId : user?.uid,
+        userId: user?.uid,
       });
     }
-  });
+  }, []);
 
   return (
     <div className="app">
@@ -48,24 +45,18 @@ function App() {
           <>
             <Switch>
               <Route path="/" exact>
-                <Sidebar />
-                <Server />
-                {voiceChannelId === null ? (
-                  <>
-                    <ServerChat />
-                    {serverId !== 'home' && <MemberList />}
-                  </>
-                ) : (
-                  <AgoraCanvas
-                    videoProfile={videoProfile}
-                    channel={channel}
-                    transcode={transcode}
-                    attendeeMode={attendeeMode}
-                    baseMode={baseMode}
-                    appId={appId}
-                    uid={uid}
-                  />
-                )}
+                <>
+                  <Sidebar />
+                  <Server />
+                  {voiceChannelId === null ? (
+                    <>
+                      <ServerChat />
+                      {serverId !== "home" && <MemberList />}
+                    </>
+                  ) : (
+                    <Meeting />
+                  )}
+                </>
               </Route>
             </Switch>
           </>

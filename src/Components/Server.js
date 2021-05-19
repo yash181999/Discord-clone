@@ -180,12 +180,11 @@ function Server() {
   const [user] = useAuthState(auth);
   const dispatch = useDispatch();
   const [voiceChannelMembers, setVoiceChannelMembers] = useState([]);
-    const [openSnackBar, setOpenSnackBar] = React.useState(false);
+  const [openSnackBar, setOpenSnackBar] = React.useState(false);
 
-    const handleCloseSnackBar = () => {
-        setOpenSnackBar(false);
-    }
-
+  const handleCloseSnackBar = () => {
+    setOpenSnackBar(false);
+  };
 
   const handleModalOpen = () => {
     setOpenModal(true);
@@ -274,19 +273,19 @@ function Server() {
           userProfileImage: user.photoURL,
           date: Date.now(),
         })
-        .then(() => {
+    
           dispatch(
             enterVoiceChannel({
               voiceChannelId: currentVoiceId,
             })
           );
 
-          Cookies.set("channel", currentVoiceId);
-          Cookies.set("baseMode", "avc");
-          Cookies.set("transcode", "interop");
-          Cookies.set("attendeeMode", "video");
-          Cookies.set("videoProfile", "480p_4");
-        });
+          localStorage.setItem("channel", currentVoiceId);
+          localStorage.setItem("baseMode", "avc");
+          localStorage.setItem("transcode", "interop");
+          localStorage.setItem("attendeeMode", "video");
+          localStorage.setItem("videoProfile", "480p_4");
+     
     }
   };
 
@@ -340,11 +339,15 @@ function Server() {
   const copyInviteLink = () => {
     navigator.clipboard.writeText(`${serverId}/join`);
     setOpenSnackBar(true);
-  }
+  };
 
   return (
     <ServerContainer>
-      <Snackbar open={openSnackBar} autoHideDuration={2000} onClose={handleCloseSnackBar}>
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={2000}
+        onClose={handleCloseSnackBar}
+      >
         <Alert onClose={handleCloseSnackBar} severity="success">
           Invite link copied to clipboard!
         </Alert>
@@ -424,6 +427,7 @@ function Server() {
         {serverId === "home" && (
           <div>
             <h4>Friends</h4>
+            <Button onClick={() => auth.signOut()}>Log out</Button>
           </div>
         )}
       </ServerHead>
@@ -434,9 +438,7 @@ function Server() {
               style={{ display: "grid", placeItems: "center", color: "white" }}
             >
               <Button
-                onClick={
-                  copyInviteLink
-                }
+                onClick={copyInviteLink}
                 fullWidth
                 style={{ backgroundColor: "#7389da", color: "white" }}
               >

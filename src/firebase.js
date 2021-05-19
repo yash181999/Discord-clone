@@ -20,6 +20,6 @@ const auth = firebase.auth();
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
- var storageRef = firebase.storage().ref();
+const storageRef = firebase.storage().ref();
 
 export { auth, provider, db , storageRef};
