@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { Add, Camera, Close, Send, VideoCall } from "@material-ui/icons";
 import React, { useEffect, useRef, useState } from "react";
-import empty from '../../src/empty.svg'
+import empty from "../../src/empty.svg";
 import styled from "styled-components";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
@@ -289,19 +289,21 @@ function ServerChat() {
           <h3># {channelName}</h3>
         </ServerChatNav>
         <Chat>
-          {serverId ==='home' && <div
-            style={{
-              display: "grid",
-              placeItems: "center",
-              color: "white",
-              height: "100%",
-            }}
-          >
-            <div>
-              <img src={empty}></img>
-              <h2>No one Around</h2>
+          {serverId === "home" && (
+            <div
+              style={{
+                display: "grid",
+                placeItems: "center",
+                color: "white",
+                height: "100%",
+              }}
+            >
+              <div>
+                <img src={empty}></img>
+                <h2>No one Around</h2>
+              </div>
             </div>
-          </div>}
+          )}
 
           {serverId !== "home" && (
             <ChatMessages>

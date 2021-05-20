@@ -8,7 +8,6 @@ import MemberList from "./Components/MemberList";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./Views/Login";
 import { auth, db } from "./firebase";
-import { useAuthState } from "react-firebase-hooks";
 import { useSelector } from "react-redux";
 import {
   selectedChannelId,
@@ -17,6 +16,7 @@ import {
 } from "./features/appSlice";
 import { AGORA_APP_ID } from "./agora.config";
 import Meeting from "./meeting/index";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function App() {
   const appId = AGORA_APP_ID;
